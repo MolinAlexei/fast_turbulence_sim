@@ -1,51 +1,77 @@
 import jax.numpy as jnp
+from jax.numpy import fft as fft
 
 
-class VCubeProjection :
+def my_convolution(array1, array2):
+    # My implementation of convolution of 2d arrays on calmip 
+    # because of issues with CuDNN if I try to use regular convolve
+
+    # Convolution with FFTs
+    convolution = jnp.real(
+                        fft.fftshift(
+                            fft.ifftn(fft.fftn(array1) * jnp.conj(fft.fftn(array2)))
+                                    )
+                          )
+
+    # Reshape convolution to match output of regular scipy convolve
+    return jnp.roll(convolution,-1, axis = (0,1))
+
+
+class VCubeProjection_v2 :
     """
     Projection of velocity cube with emission weighting in binned map
     """
-    def __init__(self, binning, em_cube):
+    def __init__(self, binning, em_cube, PSF_kernel):
+        """
+        Initialize
+
+        Parameters:
+            binning (jnp.Module): Binning
+            em_cube (jnp.array): 3D emissivity cube
+            PSF_kernel (jnp.array): PSF discretized on the pixel grid
+        """
         
         self.binning = binning
         self.em = em_cube
+        self.PSF_kernel = PSF_kernel
         
     def __call__(self,v):
         
         """
         Uses counts to weight and project the velocity cube
         into a centroid shift map and broadening map.
+        Uses a convolution with product in Fourier space.
         
-        Parameters
-        ----------
-        v : Array
-            Velocity cube
-        Returns
-        -------
-        v_map : Array
-            Binned image of the emission weighted centroid shift
-        std_map : Array
-            Binned image of the emission weighted broadening
-        binned_v_weighted : Array
-            Vector of emission weighted centroid shift in each bin
-        binned_std_weighted : Array
-            Vector of emission weighted broadening in each bin
+        Parameters:
+            v (jnp.array): Velocity cube
+
+        Returns:
+            v_map (jnp.array): Binned image of the emission weighted centroid shift
+            std_map (jnp.array): Binned image of the emission weighted broadening
+            binned_v_weighted (jnp.array): Vector of emission weighted centroid shift in each bin
+            binned_std_weighted (jnp.array): Vector of emission weighted broadening in each bin
             
         """
         
         # This is a fully jaxified version
     
-        # Value of the speed grouped by pixel
-        v_vec = v[self.binning.X_pixels,
-                  self.binning.Y_pixels, 
-                  :]
+        # Summing emission weighted speed in each pixel        
+        v_vec = jnp.sum(v*self.em, axis = -1)
+        std_vec = jnp.sum(v**2*self.em, axis = -1)
+        count_vec = jnp.sum(self.em, axis = -1)
+        
+        # Convolution by PSF
+        v_vec_conv = my_convolution(v_vec, self.PSF_kernel)
+        std_vec_conv = my_convolution(std_vec, self.PSF_kernel)
+        count_vec_conv = my_convolution(count_vec, self.PSF_kernel)
+        
+        # Extracting values within pixels from matrix
+        v_vec_conv_pix = v_vec_conv[self.binning.X_pixels,self.binning.Y_pixels]
+        std_vec_conv_pix = std_vec_conv[self.binning.X_pixels,self.binning.Y_pixels]
+        count_vec_conv_pix = count_vec_conv[self.binning.X_pixels,self.binning.Y_pixels]
 
-        # Value of the emission grouped by pixel
-        count_vec = self.em[self.binning.X_pixels,
-                       self.binning.Y_pixels, 
-                       :]
 
-        # Indices of in which bin goes each pixel
+        # Indices of which bin each pixel goes in
         bins_unique, inverse_indices = jnp.unique(self.binning.bin_num_pix, 
                                                   return_inverse=True, 
                                                   size = self.binning.nb_bins)
@@ -56,9 +82,9 @@ class VCubeProjection :
         bin_std = jnp.zeros(len(bins_unique))
 
         # We add to each bin the weighted sum of all pixels belonging to it
-        bin_v = bin_v.at[inverse_indices].add(jnp.sum(v_vec*count_vec, axis = -1))
-        bin_counts = bin_counts.at[inverse_indices].add(jnp.sum(count_vec, axis = -1))
-        bin_std = bin_std.at[inverse_indices].add(jnp.sum(v_vec**2 *count_vec, axis = -1))
+        bin_v = bin_v.at[inverse_indices].add(v_vec_conv_pix)
+        bin_counts = bin_counts.at[inverse_indices].add(count_vec_conv_pix)
+        bin_std = bin_std.at[inverse_indices].add(std_vec_conv_pix)
 
 
         # Divide by weighing (i.e. summed emission)

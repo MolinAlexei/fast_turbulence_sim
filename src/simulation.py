@@ -83,11 +83,11 @@ class Simulation(hk.Module):
         Returns the structure function
 
         Returns:
-            dist (jn.array) : Vector of separations at which the SF is computed
-            sf (jnp.array) : SF of centroid shift
-            sf_std (jnp.array) : SF of broadening
-            v_vec (jnp.array) : Vector of centroid shifts
-            std_vec (jnp.array) : Vector of broadenings
+            dist (jn.array): Vector of separations at which the SF is computed
+            sf (jnp.array): SF of centroid shift
+            sf_std (jnp.array): SF of broadening
+            v_vec (jnp.array): Vector of centroid shifts
+            std_vec (jnp.array): Vector of broadenings
         """
 
         key = hk.next_rng_key()
