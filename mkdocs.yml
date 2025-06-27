@@ -13,7 +13,6 @@ theme:
 
 plugins:
   - search
-  - autorefs
   - mkdocs-jupyter:
       include_requirejs: True
       include_source: True
