@@ -1,1 +1,1 @@
-::: structure-function
+::: structure_function
