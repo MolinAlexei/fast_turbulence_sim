@@ -5,9 +5,18 @@ site_url: https://molinalexei.github.io/fast_turbulence_sim/
 nav:
   - Home: 'index.md'
   - API Reference :
-      - Simulation : 'references/simulation.md'
+      - Abundance : 'references/abundance.md'
+      - Binning : 'references/binning.md'
+      - Cooling : 'references/cooling.md'
+      - Cube : 'references/cube.md'
+      - Density : 'references/density.md'
+      - Emissivity : 'references/emissivity.md'
       - Projection : 'references/projection.md'
+      - Simulation : 'references/simulation.md'
       - Structure Function : 'references/structure_function.md'
+      - Temperature : 'references/temperature.md'
+      - Turbulence : 'references/turbulence.md'
+
 
 
 theme:

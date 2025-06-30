@@ -19,6 +19,14 @@ class EmissivityCube(hk.Module):
     """
     
     def __init__(self, spatial_grid, exposure = 125e3):
+        """
+        Initialize
+
+        Parameters:
+            spatial_grid (class): 3D Spatial grid
+            exposure (float): Exposure time in seconds
+
+        """ 
         super(EmissivityCube, self).__init__()
         self.power_spectrum = KolmogorovPowerSpectrum()
         self.spatial_grid = spatial_grid
@@ -31,6 +39,11 @@ class EmissivityCube(hk.Module):
         
         
     def __call__(self):
+        """
+        Returns:
+            field_spatial (jnp.array): Random realization of emissivity cube
+
+        """
         
         key = hk.next_rng_key()
 
@@ -49,6 +62,15 @@ class FluctuationCube(hk.Module):
     
 
     def __init__(self, spatial_grid):
+        """
+        Initialize. The power spectrum is implicitly defined from the Kolmogorov power spectrum
+
+        Parameters:
+            spatial_grid (class): 3D Spatial grid
+            exposure (float): Exposure time in seconds
+
+        """ 
+
         super(FluctuationCube, self).__init__()
         self.power_spectrum = KolmogorovPowerSpectrum()
         self.spatial_grid = spatial_grid
@@ -56,6 +78,11 @@ class FluctuationCube(hk.Module):
         self.K = self.fourier_grid.K.astype(np.float64)
         
     def __call__(self):
+        """
+        Returns:
+            field_spatial (jnp.array): Random realization of GRF
+
+        """
         
         key = hk.next_rng_key()
         

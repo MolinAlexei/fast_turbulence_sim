@@ -1,6 +1,6 @@
-# Welcome to MkDocs
+# Home
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+This is the documentation for the code used for creating fast simulations of direct observations of turbulent velocity fields.
 
 ## Commands
 
