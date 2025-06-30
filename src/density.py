@@ -11,8 +11,6 @@ class VikhlininModel(hk.Module):
     See Ghirardini et al. 2019
 
     """
-
-
     
     def __init__(self):
         super(VikhlininModel, self).__init__()
@@ -20,6 +18,7 @@ class VikhlininModel(hk.Module):
     def __call__(self, r):
         """
         Compute the density function for a given radius.
+        $$n_e^2(x)= n_0^2 \frac{(\frac{x}{r_c})^{-\alpha}}{(1 + (\frac{x}{r_c})^2)^{3\beta -\alpha /2}} \frac{1}{(1 + (\frac{x}{r_s})^{\gamma})^{\frac{\epsilon}{\gamma}}}$$
 
         Parameters:
             r (jnp.array): Radius to compute the density function in R500 units

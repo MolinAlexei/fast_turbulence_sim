@@ -1,7 +1,7 @@
 from jax import config
 config.update("jax_enable_x64", True)
 import haiku as hk
-from beta_model import VikhlininModel
+from density import VikhlininModel
 from temperature import GhirardiniModel
 from abundance import XCOPAbundance
 from cooling import APECEmissivity

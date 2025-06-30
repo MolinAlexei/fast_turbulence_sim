@@ -14,6 +14,11 @@ class KolmogorovPowerSpectrum(hk.Module):
         super(KolmogorovPowerSpectrum, self).__init__()
 
     def __call__(self, k):
+        r"""
+        Kolmogorov power spectrum
+
+        $$\mathcal{P}_{3D}(k)= \sigma^2 \frac{e^{-\left(k/k_{\text{inj}}\right)^2} e^{-\left(k_{\text{dis}}/k\right)^2} k^{-\alpha} }{\int 4\pi k^2  \, e^{-\left(k/k_{\text{inj}}\right)^2} e^{-\left(k_{\text{dis}}/k\right)^2} k^{-\alpha} \text{d} k}$$
+        """
         
         sigma = hk.get_parameter("sigma", [], init=Constant(250)) #km/s
         log_inj = hk.get_parameter("log_inj", [], init=Constant(jnp.log10(300))) #kpc
