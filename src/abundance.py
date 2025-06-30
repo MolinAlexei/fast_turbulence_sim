@@ -6,8 +6,8 @@ import jax.numpy as jnp
 
 
 class XCOPAbundance(hk.Module):
-    r"""
-    Universal iron abundance profile as defined in Ghirardini 2018+ in the X-COP cluster sample
+    r"""Universal iron abundance profile as defined in Ghirardini 2018+ in the X-COP cluster sample
+
     $$Fe(x) = 0.21 (x + 0.021)^{-0.48} - 6.54\times \exp(- \frac{(r + 0.0816)^2}{0.0027})$$
     """
 

@@ -16,8 +16,8 @@ class GhirardiniModel(hk.Module):
 
 
     def __call__(self, r, z = 0.1):
-        r"""
-        Compute the temperature function for a given radius.
+        r"""Compute the temperature function for a given radius.
+
         $$\dfrac{T(x)}{T_{500}} = T_0 \dfrac{\frac{T_\mathrm{min}}{T_0} + (\frac{x}{r_\mathrm{cool}})^{a_\mathrm{cool}}}{1 + (\frac{x}{r_\mathrm{cool}})^{a_\mathrm{cool}}} \frac{1}{(1 + (\frac{x}{r_t})^2)^{\frac{c}{2}}}$$
 
         Parameters:
