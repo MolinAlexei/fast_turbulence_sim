@@ -4,6 +4,10 @@ site_url: https://molinalexei.github.io/fast_turbulence_sim/
 
 nav:
   - Home: 'index.md'
+  - Introduction : 'notebooks/Intro_Observables.ipynb'
+  - Using the simulation : 'notebooks/use_sim.ipynb'
+  - Create the emissivty table : 'notebooks/Create_emissivity.ipynb'
+  - Create the PSF file : 'notebooks/create_psf.ipynb'
   - API Reference :
       - Abundance : 'references/abundance.md'
       - Binning : 'references/binning.md'
@@ -21,6 +25,27 @@ nav:
 
 theme:
   name: material
+  features:
+    - content.tabs.link
+    - content.code.copy
+    - navigation.indexes
+  favicon: logo/logo.png
+  logo: logo/logo.png
+
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
 
 plugins:
   - search

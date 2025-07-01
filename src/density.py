@@ -27,8 +27,8 @@ class VikhlininModel(hk.Module):
             (jnp.array): Density function evaluated at the given radius in cm$^{-6}$
         """
 
-        #n0 = hk.get_parameter("n0", [], init=Constant(jnp.exp(-4.9)))
-        #r_c = hk.get_parameter("r_c", [], init=Constant(jnp.exp(-2.7))) 
+        n0 = hk.get_parameter("n0", [], init=Constant(jnp.exp(-4.9)))
+        r_c = hk.get_parameter("r_c", [], init=Constant(jnp.exp(-2.7))) 
         
 
         R500 = 1309. #[kpc]

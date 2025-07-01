@@ -7,7 +7,6 @@ import jax.random as random
 import jax.numpy.fft as fft
 from grid import SpatialGrid3D, FourierGrid3D
 from turbulence import KolmogorovPowerSpectrum
-from beta_model import BetaModel, XBetaModel, FlatModel, VikhlininModel
 import astropy.units as u
 from emissivity import XrayEmissivity
 
