@@ -1,24 +1,22 @@
 from jax import config
 config.update("jax_enable_x64", True)
-import haiku as hk
-from density import VikhlininModel
-from temperature import GhirardiniModel
-from abundance import XCOPAbundance
-from cooling import APECEmissivity
+from .density import VikhlininModel
+from .temperature import GhirardiniModel
+from .abundance import XCOPAbundance
+from .cooling import APECEmissivity
 from astropy.cosmology import LambdaCDM
 import astropy.units as u
 import jax.numpy as jnp
-import matplotlib.pyplot as plt
 
-class XrayEmissivity(hk.Module):
+class XrayEmissivity(object):
     """
     3D Xray emissivity build with temperature, cooling function, density model.
     It depends on the redshift of the cluster, since the cooling function is precomputed using XSPEC.
     The default models are the ones used in the papers i.e. Vikhlinin for density, Ghirardini for temperature
     and the interpolated cooling function.
     """
-    def __init__(self, TZ_grid_to_interp_from = '/xifu/home/mola/SBI_Turbulence/data/flux_table_APEC_oldXIFU.npy'):
-        super(XrayEmissivity, self).__init__()
+    def __init__(self,
+                 TZ_grid_to_interp_from = '/xifu/home/mola/SBI_Turbulence/data/flux_table_APEC_oldXIFU.npy'):
         self.squared_density = VikhlininModel()
         self.temperature = GhirardiniModel()
         self.abundance = XCOPAbundance()

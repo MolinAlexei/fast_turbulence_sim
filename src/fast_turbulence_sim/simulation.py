@@ -1,23 +1,19 @@
 from jax import config
 config.update("jax_enable_x64", True)
-import haiku as hk 
 import numpy as np
 import jax
 import jax.numpy as jnp
 import jax.numpy.fft as fft
 import jax.random as random
-import haiku as hk
-from haiku.initializers import Constant
-from astropy.io import fits
- 
-from cube import FluctuationCube
+
+from .cube import FluctuationCube
 
 def rng_key():
 
-    return random.PRNGKey(np.random.randint(0, int(1e6)))
+    return random.PRNGKey(np.random.randint(0, int(1e9)))
 
 
-class Simulation(hk.Module):
+class Simulation(object):
 
     def __init__(self, 
                 spatial_grid,
@@ -45,7 +41,7 @@ class Simulation(hk.Module):
             broad_errors (jnp.array): std of censhift measurement error
         """
 
-        super(Simulation, self).__init__()
+        #super(Simulation, self).__init__()
         
 
         # Initialize 
@@ -75,12 +71,19 @@ class Simulation(hk.Module):
         self.offsets_std = broad_offsets[jnp.searchsorted(radial_bins_mes_errors, rBar_bins)-1]
         self.errors_std = broad_errors[jnp.searchsorted(radial_bins_mes_errors, rBar_bins)-1]
         
-    def __call__(self):
+    def __call__(self,
+                 rng_key : jax.random.PRNGKey,
+                 sigma : float,
+                 log_inj : float,
+                 log_dis : float,
+                 alpha : float):
         """
         Creates a realization of a GRF for the speed along the los
         Projects the speed with em-weighting in binned maps
         Adds measurement error
         Returns the structure function
+
+
 
         Returns:
             dist (jn.array): Vector of separations at which the SF is computed
@@ -90,14 +93,16 @@ class Simulation(hk.Module):
             std_vec (jnp.array): Vector of broadenings
         """
 
-        key = hk.next_rng_key()
+        #key = hk.next_rng_key()
+        key1, key1_bis = jax.random.split(rng_key.reshape(2,))
 
-        v_cube = self.fluctuation_generator()
+        v_cube = self.fluctuation_generator(key1, sigma, log_inj, log_dis, alpha)
 
         _,_,v_vec, std_vec = self.projection(v_cube)
 
+        key2, key3 = jax.random.split(key1_bis)
         #Add measurement error on centroid shift
-        err_v = random.multivariate_normal(key = key,
+        err_v = random.multivariate_normal(key = key2,
                                             mean = self.offsets_v, 
                                             cov = jnp.diag(self.errors_v**2))
 
@@ -113,7 +118,8 @@ class Simulation(hk.Module):
         mu = std_vec + self.offsets_std
         a = mu**2 / self.errors_std**2
         scale = self.errors_std**2 / mu
-        std_vec = random.gamma(key = rng_key(),a = a) * scale
+        std_vec = random.gamma(key3,
+                               a = a) * scale
 
 
         #SF of velocity map

@@ -1,19 +1,17 @@
 """ Python module containing the interpolation of the APEC emissivity in temperature and abundance."""
 from jax import config
 config.update("jax_enable_x64", True)
-import haiku as hk
 import jax.numpy as jnp
-from scipy.interpolate import RegularGridInterpolator
-import numpy as np
 import jax
 
-class APECEmissivity(hk.Module):
+
+class APECEmissivity(object):
     """
     Universal temperature profile as defined in Ghirardini 2018+ in the X-COP cluster sample
     """
 
     def __init__(self, TZ_grid_to_interp_from = '/xifu/home/mola/SBI_Turbulence/data/flux_table_APEC_oldXIFU.npy'):
-        super(APECEmissivity, self).__init__()
+        #super(APECEmissivity, self).__init__()
 
         """
         OLD Version 

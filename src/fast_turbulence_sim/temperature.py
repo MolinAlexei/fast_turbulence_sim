@@ -1,17 +1,15 @@
 from jax import config
 config.update("jax_enable_x64", True)
-import haiku as hk
 import jax.numpy as jnp
 from astropy.cosmology import LambdaCDM
 
 
-class GhirardiniModel(hk.Module):
+class GhirardiniModel(object):
     """
     Universal temperature profile as defined in Ghirardini 2018+ in the X-COP cluster sample
     """
 
     def __init__(self):
-        super(GhirardiniModel, self).__init__()
         self.cosmo = LambdaCDM(H0 = 70, Om0 = 0.3, Ode0= 0.7)
 
 

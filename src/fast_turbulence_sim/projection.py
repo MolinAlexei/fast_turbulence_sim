@@ -17,16 +17,19 @@ def my_convolution(array1, array2):
     return jnp.roll(convolution,-1, axis = (0,1))
 
 
-class VCubeProjection_v2 :
+class Projection :
     """
     Projection of velocity cube with emission weighting in binned map
     """
-    def __init__(self, binning, em_cube, PSF_kernel):
+    def __init__(self,
+                 binning,
+                 em_cube,
+                 PSF_kernel):
         """
         Initialize
 
         Parameters:
-            binning (jnp.Module): Binning
+            binning (object): Binning
             em_cube (jnp.array): 3D emissivity cube
             PSF_kernel (jnp.array): PSF discretized on the pixel grid
         """
@@ -35,7 +38,8 @@ class VCubeProjection_v2 :
         self.em = em_cube
         self.PSF_kernel = PSF_kernel
         
-    def __call__(self,v):
+    def __call__(self,
+                 v : jnp.array):
         
         """
         Uses counts to weight and project the velocity cube

@@ -3,7 +3,6 @@ config.update("jax_enable_x64", True)
 import numpy as np
 import jax.numpy as jnp
 import jax.numpy.fft as fft
-import astropy.units as u
 
 
 class SpatialGrid3D:

@@ -1,13 +1,10 @@
-import numpy as np 
-from itertools import combinations
-import scipy.stats as stats
+import numpy as np
 import jax.numpy as jnp
-
-import time
 
 class StructureFunction:
 
-    def __init__(self, bins = np.geomspace(1,40,15)):
+    def __init__(self,
+                 bins = np.geomspace(1,40,15)):
         """
         Initialize
         Parameters:
@@ -16,19 +13,21 @@ class StructureFunction:
 
         self.bins = bins
 
-    def __call__(self, v_bin_vec, xbary, ybary):
+    def __call__(self,
+                 v_bin_vec : jnp.array,
+                 xbary : jnp.array,
+                 ybary : jnp.array):
         """
         Computes the 2nd order structure function of an image with arbitrary binning.
         
         Parameters:
-            v_bin_vec array (jn.array): Array of the count weighted velocity in each bin
-            xbary (jn.array): Array of the bin barycenters X coordinate
-            ybary (jn.array): Array of the bin barycenters Y coordinate
-            bins (jn.array): Array of the binning chosen for the SF
+            v_bin_vec array (jnp.array): Array of the count weighted velocity in each bin
+            xbary (jnp.array): Array of the bin barycenters X coordinate
+            ybary (jnp.array): Array of the bin barycenters Y coordinate
 
         Returns:
-            bin_dists (jn.array): Separations of the SF
-            bin_means (jn.array): Values of the SF
+            bin_dists (jnp.array): Separations of the SF
+            bin_means (jnp.array): Values of the SF
         """
         
         #Indexes of all possible combinations
