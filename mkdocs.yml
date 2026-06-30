@@ -56,8 +56,8 @@ plugins:
       default_handler: python
       handlers:
         python:
-          paths: [src]
-          import:
+          paths: [src/fast_turbulence_sim]
+          inventories:
             - https://docs.python.org/3/objects.inv
             - https://docs.astropy.org/en/stable/objects.inv
             - https://numpy.org/doc/stable/objects.inv
