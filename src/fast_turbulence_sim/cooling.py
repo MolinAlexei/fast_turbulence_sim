@@ -11,34 +11,12 @@ class APECEmissivity(object):
     """
 
     def __init__(self, TZ_grid_to_interp_from = '/xifu/home/mola/SBI_Turbulence/data/flux_table_APEC_oldXIFU.npy'):
-        #super(APECEmissivity, self).__init__()
-
         """
-        OLD Version 
-        #Load APEC flux computed for a regular grid of temperatures and abundances
-        #flux_table = np.load('/xifu/home/mola/SBI_Turbulence/data/flux_table_z0.1.npy')
-        #TZ_table = np.load('/xifu/home/mola/SBI_Turbulence/data/flux_interp_z0.1.npy',allow_pickle=True)
-        #(Z_table, T_table, _,_)= TZ_table
-        
-
-        #Sum all photons in spectrum
-        #flux_table_photons = np.sum(flux_table, axis = -1, weights )
-
-        #Interpolating function
-        #self.interp_function  = RegularGridInterpolator((Z_table, T_table), flux_table_photons)
+        Init
+        Parameters:
+            TZ_grid_to_interp_from (string): path to temperature and abundance table
         """
 
-        """
-        OLD Version 2 
-
-        Npts = 100
-        flux_table = np.reshape(np.load('data/flux_table_APEC_oldXIFU.npy'), (100,100)).T
-
-        T_table = np.linspace(0.1, 10, Npts)
-        Z_table = np.linspace(0.01, 1, Npts)
-
-        self.interp_function = RegularGridInterpolator((T_table, Z_table), flux_table)
-        """
         self.flux_table = jnp.reshape(jnp.load(TZ_grid_to_interp_from), (100,100)).T
 
 
