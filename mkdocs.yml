@@ -5,7 +5,7 @@ site_url: https://molinalexei.github.io/fast_turbulence_sim/
 nav:
   - Home: 'index.md'
   - Introduction : 'notebooks/Intro_Observables.ipynb'
-  - Using the simulation : 'notebooks/use_sim.ipynb'
+  - Using the simulation : 'notebooks/use_sim_updated.ipynb'
   - Create the emissivty table : 'notebooks/Create_emissivity.ipynb'
   - Create the PSF file : 'notebooks/create_psf.ipynb'
   - API Reference :
