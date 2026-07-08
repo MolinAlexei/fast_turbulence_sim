@@ -12,7 +12,6 @@ class LoadBinning:
     """
 
     def __init__(self,
-                 shape=(360, 360),
                  binning_file='/xifu/home/mola/Turbu_300kpc_mosaics/repeat10_125ks/19p_region_200/region_files/19p_region_dict.p',
                  count_map_file='/xifu/home/mola/Turbu_300kpc_mosaics/repeat10_125ks/19p_count_image.fits'):
         """
@@ -24,9 +23,9 @@ class LoadBinning:
             count_map_file (str): Path to the count map used for binning
         """
 
-        self.shape = shape
         self.binning_dict, self.region_image = pickle.load(open(binning_file, 'rb'), encoding="bytes")
         self.countmap = np.array(fits.getdata(count_map_file))
+        self.shape = self.countmap.shape
 
     def __call__(self):
         """

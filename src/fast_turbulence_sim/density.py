@@ -11,9 +11,9 @@ class VikhlininModel(object):
     """
     
     def __init__(self,
+                 R500 = 1309.,
                  n0 = jnp.exp(-4.9),
                  r_c = jnp.exp(-2.7),
-                 R500 = 1309.,
                  gamma = 3,
                  r_s = jnp.exp(-0.51) ,
                  alpha = 0.7,
@@ -21,6 +21,7 @@ class VikhlininModel(object):
                  eps = 2.6):
         """
         Parameters:
+            R500 (float): Radius R500 of the cluster
             n0 (float): Density at core of cluster
             R500 (float): Characteristic size of cluster
             r_c (float): Shape radius 1 in units of R/R500

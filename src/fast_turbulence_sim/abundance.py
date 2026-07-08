@@ -12,6 +12,10 @@ class XCOPAbundance(object):
 
     def __init__(self,
                  R500 = 1309.):
+        """
+        Parameters:
+            R500 (jnp.array): Radius R500 of the cluster
+        """
 
         self.R500 = R500
 

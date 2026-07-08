@@ -10,7 +10,7 @@ class GhirardiniModel(object):
     """
 
     def __init__(self,
-                 M500=0.7,
+                 M500 = 0.7,
                  h_70 = 0.7,
                  T0 = 1.09,
                  rcool = jnp.exp(-4.4),
@@ -19,7 +19,19 @@ class GhirardiniModel(object):
                  acool = 1.33,
                  c2 = 0.3,
                  R500 = 1309.,  # [kpc]
-                 ):
+                 z = 0.1):
+        """
+        Parameters:
+            M500 (jnp.array): M500 of the cluster
+            h_70 (jnp.array): h_70 of the chosen cosmology
+            T0 (float): Normalization factor
+            rcool (float): Shape radius 1 in units of R/R500
+            rt (float): Shape radius 2 in units of R/R500
+            acool (float): Shape parameter 1
+            c2 (float): Shape parameter 2
+            z (float): Redshift of the cluster
+
+        """
 
         self.M500 = M500
         self.h_70 = h_70
@@ -31,20 +43,20 @@ class GhirardiniModel(object):
         self.c2 = c2
         self.R500 = R500
 
-        self.T500 = (8.85
-                     * (M500 * h_70) ** (2. / 3.)
-                     * Ez ** (2. / 3.))
+
         self.cosmo = LambdaCDM(H0 = 70, Om0 = 0.3, Ode0= 0.7)
         self.Ez = self.cosmo.efunc(z)
+        self.T500 = (8.85
+                     * (M500 * h_70) ** (2. / 3.)
+                     * self.Ez ** (2. / 3.))
 
-    def __call__(self, r, z = 0.1):
+    def __call__(self, r):
         r"""Compute the temperature function for a given radius.
 
         $\dfrac{T(x)}{T_{500}} = T_0 \dfrac{\frac{T_\mathrm{min}}{T_0} + (\frac{x}{r_\mathrm{cool}})^{a_\mathrm{cool}}}{1 + (\frac{x}{r_\mathrm{cool}})^{a_\mathrm{cool}}} \frac{1}{(1 + (\frac{x}{r_t})^2)^{\frac{c}{2}}}$
 
         Parameters:
             r (jnp.array): Radius at which to compute the temperature, in kpc
-            z (float): Redshift of cluster
         Returns:
             (jnp.array): Temperature function evaluated at the given radius in keV
         """
